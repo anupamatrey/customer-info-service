@@ -1,0 +1,9 @@
+info:
+   app:
+     name: Customer Information Service
+server:
+  port: 8080
+aws:
+  region: us-east-1
+
+DYNAMO_DB_TABLE_NAME: 'customer_info'

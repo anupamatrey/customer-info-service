@@ -1,0 +1,10 @@
+info:
+   app:
+     name: Customer Information Service
+server:
+  port: 8080
+aws:
+  region: us-east-1
+
+USER_ACCESS_KEY_ACCESSKEYID:
+USER_ACCESS_KEY_SECRETACCESSKEY:
