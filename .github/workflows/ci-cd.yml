@@ -71,5 +71,5 @@ jobs:
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: customer-info-service
-          cluster: ${ECS_CLUSTER_NAME}
+          cluster: DevServiceCluster
           wait-for-service-stability: true
