@@ -1,15 +1,15 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:952849651017:task-definition/customer-service-task:1",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:952849651017:task-definition/customer-service-task-definition:1",
   "containerDefinitions": [
     {
-      "name": "customer-service",
-      "image": "952849651017.dkr.ecr.us-east-1.amazonaws.com/customer-info-service",
+      "name": "customer-service-container",
+      "image": "952849651017.dkr.ecr.us-east-1.amazonaws.com/customer-info-service:0cdbeb741b7f0d588bf7e56f4d3cf94ae5544ccd",
       "cpu": 0,
       "portMappings": [
         {
-          "name": "customer-service-8080-tcp",
-          "containerPort": 8080,
-          "hostPort": 8080,
+          "name": "customer-service-container-80-tcp",
+          "containerPort": 80,
+          "hostPort": 80,
           "protocol": "tcp",
           "appProtocol": "http"
         }
@@ -24,7 +24,7 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/",
+          "awslogs-group": "/ecs/customer-service-task-definition",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         },
@@ -32,7 +32,7 @@
       }
     }
   ],
-  "family": "customer-service-task",
+  "family": "customer-service-task-definition",
   "taskRoleArn": "arn:aws:iam::952849651017:role/ecsTaskExecutionRole1",
   "executionRoleArn": "arn:aws:iam::952849651017:role/ecsTaskExecutionRole1",
   "networkMode": "awsvpc",
@@ -82,7 +82,7 @@
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
   },
-  "registeredAt": "2024-01-09T13:10:33.498Z",
+  "registeredAt": "2024-01-09T20:05:55.350Z",
   "registeredBy": "arn:aws:iam::952849651017:user/anupam",
   "tags": []
 }

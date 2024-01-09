@@ -51,7 +51,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
           IMAGE_TAG: ${{github.sha}}
-          ECR_REPOSITORY: 'customer-info-service'
+          ECR_REPOSITORY: 'customer-service-repository'
         run: |
           # Build a docker image, push to ECR and deployed to ECS
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -63,13 +63,13 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: customer-service-task.json
-          container-name: customer-service
+          container-name: customer-service-container
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: customer-info-service
-          cluster: DevServiceCluster
+          service: customer-information-service
+          cluster: CustomerServiceCluster
           wait-for-service-stability: true
