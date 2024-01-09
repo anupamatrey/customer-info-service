@@ -70,6 +70,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: customer-info-service
+          service: customer-info-service1
           cluster: DevServiceCluster
           wait-for-service-stability: true
