@@ -35,7 +35,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
       - name: Configure AWS Credential
-        uses: aws-action/configure-aws-credentials@4
+        uses: aws-action/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${AWS_ACCESS_KEY_Id}
           aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY}
