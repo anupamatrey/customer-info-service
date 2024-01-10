@@ -20,7 +20,7 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    private static final String template = "Hello, %s!";
+    private static final String template = "Hello, %s Anupam!";
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/customer/{id}")
