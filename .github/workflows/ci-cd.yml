@@ -14,10 +14,6 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: 'us-east-1'
       AWS_ACCOUNT_ID: '952849651017'
-      ECS_CLUSTER_NAME: 'DevServiceCluster'
-      ECS_SERVICE_NAME: 'customer-info-service'
-      ECS_REGISTRY_NAME: 'customer-info-service'
-      ECR_REPOSITORY: 'customer-info-service'
 
     steps:
       - name: Checkout code
@@ -70,6 +66,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: customer-information-service
+          service: customer-information-service1
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
