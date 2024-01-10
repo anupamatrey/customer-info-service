@@ -26,7 +26,6 @@ public class CustomerController {
     @GetMapping("/customer/{id}")
     public ResponseEntity<Response> customerInfo(@PathVariable final String id){
         LOG.info("Calling CustomerController with customer Id {} ",id);
-        Response response = null;
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }
     @GetMapping("/greeting")

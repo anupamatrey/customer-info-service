@@ -14,12 +14,13 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 public class AWSConfiguration {
     @Value("${aws.region}")
     private String region;
-    private String accessKeyId;
-    private String secretAccessKey;
 
+    @Value("${key1}")
+    private  String accessKeyId;
+
+    @Value("${key2}")
+    private  String secretAccessKey;
     public DynamoDbClient createDBClient() {
-        accessKeyId = System.getenv("AWS_ACCESS_KEY_ID");
-        secretAccessKey = System.getenv("AWS_SECRET_ACCESS_KEY");
 
         /**
          * Create the AWS credentials provider with BasicAWSCredentials
