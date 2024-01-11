@@ -7,3 +7,6 @@ aws:
   region: us-east-1
 
 DYNAMO_DB_TABLE_NAME: 'customer_info'
+spring:
+  config:
+    import : aws-secretsmanager:anupam/secret/
