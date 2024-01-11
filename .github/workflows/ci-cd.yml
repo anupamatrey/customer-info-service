@@ -72,7 +72,3 @@ jobs:
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
 
-      - name: Destroy old task definition
-        uses: aws-actions/amazon-ecs-delete-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
