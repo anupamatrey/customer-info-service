@@ -71,8 +71,6 @@ jobs:
         with:
           secret-ids: |
            MY_KEY1, anupam/secret/
-            parse-json-secrets: true
-
 
       - name: Debug show secret value
         run: |
