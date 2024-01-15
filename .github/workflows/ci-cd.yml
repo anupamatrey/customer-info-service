@@ -68,7 +68,7 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
           secret-ids: |
-           MY_KEY1, anupam/secret/key1
+           MY_KEY1, anupam/secret/
 
 
       - name: Debug show secret value
