@@ -63,6 +63,17 @@ jobs:
           task-definition: customer-service-task.json
           container-name: customer-service-container
           image: ${{ steps.build-image.outputs.image }}
+      - name: Get some secret from AWS Secrets Manager
+        id: get-aws-secret
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: |
+           MY_KEY1, anupam/secret/key1
+           MY_Key2, anupam/secret/key2
+
+      - name: Debug show secret value
+        run: |
+          echo ${{ env.MY_KEY1 }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
