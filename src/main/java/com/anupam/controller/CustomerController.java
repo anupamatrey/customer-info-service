@@ -6,6 +6,7 @@ import com.anupam.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +20,15 @@ public class CustomerController {
     private final static Logger LOG = LoggerFactory.getLogger(CustomerController.class);
     @Autowired
     CustomerService customerService;
+    @Value("${MY_KEY1}")
+    private String apiKeyValue1;
 
-    private static final String template = "Hello, %s Anupam!";
+    private static final String template = "Hello, %s Anupam! GM";
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<Response> customerInfo(@PathVariable final String id){
-        LOG.info("Calling CustomerController with customer Id {} ",id);
+        LOG.info("Calling CustomerController with customer Id {} ",apiKeyValue1);
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }
     @GetMapping("/greeting")

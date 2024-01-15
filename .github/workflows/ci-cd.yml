@@ -63,12 +63,15 @@ jobs:
           task-definition: customer-service-task.json
           container-name: customer-service-container
           image: ${{ steps.build-image.outputs.image }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Get some secret from AWS Secrets Manager
         id: get-aws-secret
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
           secret-ids: |
            MY_KEY1, anupam/secret/
+            parse-json-secrets: true
 
 
       - name: Debug show secret value
@@ -82,7 +85,5 @@ jobs:
           service: customer-information-service1
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
