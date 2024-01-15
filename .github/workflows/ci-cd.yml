@@ -69,7 +69,7 @@ jobs:
         with:
           secret-ids: |
            MY_KEY1, anupam/secret/key1
-           MY_Key2, anupam/secret/key2
+
 
       - name: Debug show secret value
         run: |
