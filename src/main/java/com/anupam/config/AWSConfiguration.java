@@ -29,6 +29,32 @@ public class AWSConfiguration {
                 .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
                 .build();
 
-       return client;
+        /**
+         * Create the AWS credentials provider with BasicAWSCredentials
+         */
+        AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(System.getenv("SECRET_1"),
+                System.getenv("SECRET_2")));
+
+        /**
+         * Adding this code only for local testing for timeout use cases for AWS DynamoDB
+         * Set up a custom SdkHttpClient with a connection timeout (in milliseconds)
+         **/
+
+        /**
+         * int connectionTimeoutMillis = 1; // 1 ms
+         * SdkHttpClient httpClient = ApacheHttpClient.builder().connectionTimeout(Duration.ofMillis(connectionTimeoutMillis)).build();
+         */
+
+        /**
+         * Create DynamoDB client with the AWS credentials
+         */
+        return DynamoDbClient.builder()
+                .region(Region.of(region))
+                /**
+                 * Un-Comment below line , if want to test time-out use case
+                 */
+                //.httpClient(httpClient)
+                .credentialsProvider(credentialsProvider)
+                .build();
     }
 }

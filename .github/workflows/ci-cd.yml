@@ -73,8 +73,6 @@ jobs:
           task-definition: customer-service-task.json
           container-name: customer-service-container
           image: ${{ steps.build-image.outputs.image }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
