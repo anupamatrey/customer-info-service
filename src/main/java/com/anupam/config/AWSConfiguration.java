@@ -26,7 +26,6 @@ public class AWSConfiguration {
         GetSecretValueRequest request = GetSecretValueRequest.builder()
                 .secretId("anupam/secret/")
                 .build();
-
         return client.getSecretValue(request);
     }
 
