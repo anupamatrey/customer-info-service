@@ -81,5 +81,7 @@ jobs:
           service: customer-information-service1
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
-          aws-region: us-east-1
+          container-env-vars: |
+            SECRET_1=${{ secrets.SECRET_1 }}
+            SECRET_2=${{ secrets.SECRET_2 }}
 
