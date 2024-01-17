@@ -82,6 +82,6 @@ jobs:
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
           container-env-vars: |
-            SECRET_1=${{ secrets.SECRET_1 }}
-            SECRET_2=${{ secrets.SECRET_2 }}
+            SECRET_1=${{ secrets.AWS_ACCESS_KEY_ID }}
+            SECRET_2=${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
