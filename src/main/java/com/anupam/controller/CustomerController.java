@@ -20,15 +20,14 @@ public class CustomerController {
     private final static Logger LOG = LoggerFactory.getLogger(CustomerController.class);
     @Autowired
     CustomerService customerService;
-    @Value("${MY_KEY1}")
-    private String apiKeyValue1;
+
 
     private static final String template = "Hello, %s Anupam! GM";
     private final AtomicLong counter = new AtomicLong();
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<Response> customerInfo(@PathVariable final String id){
-        LOG.info("Calling CustomerController with customer Id {} ",apiKeyValue1);
+        LOG.info("Calling CustomerController with customer Id {} ",id);
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }
     @GetMapping("/greeting")

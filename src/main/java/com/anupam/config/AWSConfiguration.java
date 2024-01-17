@@ -1,8 +1,8 @@
 package com.anupam.config;
 
-import com.jayway.jsonpath.JsonPath;
-import jakarta.annotation.PostConstruct;
+
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -14,50 +14,41 @@ import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
 import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;
 
+
 @Configuration
 @Slf4j
 public class AWSConfiguration {
     @Value("${aws.region}")
     private String region;
 
-    @Value("${MY_KEY1}")
-    private String apiKeyValue1;
+    private static GetSecretValueResponse getSecret(SecretsManagerClient client, String secretName) {
 
-    @Value("${key2}")
-    private String apiKeyValue2;
+        GetSecretValueRequest request = GetSecretValueRequest.builder()
+                .secretId("anupam/secret/")
+                .build();
 
-//    private static String getSecret(String key) {
-//
-//        String secretName = "anupam/secret/";
-//        Region region = Region.of("us-east-1");
-//
-//        // Create a Secrets Manager client
-//        SecretsManagerClient client = SecretsManagerClient.builder()
-//                .region(region)
-//                .build();
-//
-//        GetSecretValueRequest getSecretValueRequest = GetSecretValueRequest.builder()
-//                .secretId(secretName)
-//                .build();
-//
-//        GetSecretValueResponse getSecretValueResponse;
-//
-//        try {
-//            getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
-//        } catch (Exception e) {
-//            throw e;
-//        }
-//        String secretValue = getSecretValueResponse.secretString();
-//        return JsonPath.read(secretValue,"$."+ key);
-//    }
+        return client.getSecretValue(request);
+    }
+
     public DynamoDbClient createDBClient() {
+        String accessKeySecretName = "key1";
+        String secretKeySecretName = "key2";
+
+        SecretsManagerClient secretsClient = SecretsManagerClient.builder()
+                .region(Region.of("us-east-1"))
+                .build();
+        GetSecretValueResponse accessKeyResponse = getSecret(secretsClient, accessKeySecretName);
+        String accessKey = accessKeyResponse.secretString();
+
+        GetSecretValueResponse secretKeyResponse = getSecret(secretsClient, secretKeySecretName);
+        String secretKey = secretKeyResponse.secretString();
 
 
         /**
          * Create the AWS credentials provider with BasicAWSCredentials
          */
-        AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(apiKeyValue1,
-                apiKeyValue2));
+        AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKey,
+                secretKey));
 
         /**
          * Adding this code only for local testing for timeout use cases for AWS DynamoDB

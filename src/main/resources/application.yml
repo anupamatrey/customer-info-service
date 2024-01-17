@@ -8,3 +8,5 @@ aws:
 
 DYNAMO_DB_TABLE_NAME: 'customer_info'
 
+
+
