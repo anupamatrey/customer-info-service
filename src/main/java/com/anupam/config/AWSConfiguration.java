@@ -23,12 +23,6 @@ public class AWSConfiguration {
     private String region;
 
     public DynamoDbClient createDBClient() {
-
-        DynamoDbClient client = DynamoDbClient.builder()
-                .region(Region.US_EAST_1)
-                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
-                .build();
-
         /**
          * Create the AWS credentials provider with BasicAWSCredentials
          */
