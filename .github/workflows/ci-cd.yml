@@ -41,10 +41,17 @@ jobs:
       - name: Retrieve secrets from AWS Secrets Manager
         id: retrieve-secrets
         run: |
-          export SECRET_1=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
-          export SECRET_2=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
+          export SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
           echo "Secret retrieved successfully"
-          echo "Secret 1: $SECRET_1"
+          echo "Secret_JSON: $SECRET_JSON"
+          SECRET_1=$(echo $SECRET_JSON | jq -r '.key1')
+          SECRET_2=$(echo $SECRET_JSON | jq -r '.key2')
+          echo "Secret_JSON: $SECRET_1"
+          
+          
+          export SECRET_11=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
+          export SECRET_21=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
+
 
       - name: Login into AWS ECR
         id: login-ecr
@@ -58,6 +65,8 @@ jobs:
           ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
           IMAGE_TAG: ${{github.sha}}
           ECR_REPOSITORY: 'customer-service-repository'
+          SECRET_1: $SECRET_1
+          SECRET_2: $SECRET_2
         run: |
           # Build a docker image, push to ECR and deployed to ECS
           docker build --build-arg SECRET_1=$SECRET_1 --build-arg SECRET_2=$SECRET_2 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
