@@ -1,5 +1,7 @@
 FROM openjdk:17-oracle
 # Set the environment variables required for your application
+ARG SECRET_1
+ARG SECRET_2
 ENV SECRET_1=${SECRET_1}
 ENV SECRET_2=${SECRET_2}
 WORKDIR /app
