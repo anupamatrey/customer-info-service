@@ -44,6 +44,7 @@ jobs:
           export SECRET_1=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
           export SECRET_2=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
           echo "Secret retrieved successfully"
+          echo "Secret 1: $SECRET_1"
 
       - name: Login into AWS ECR
         id: login-ecr
