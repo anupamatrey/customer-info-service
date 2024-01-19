@@ -52,6 +52,9 @@ jobs:
           export SECRET_11=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
           export SECRET_21=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
 
+      - name: Set outputs
+        id: set-outputs
+        run: echo "::set-output name=SECRET_1::$SECRET_1\n::set-output name=SECRET_2::$SECRET_2"
 
       - name: Login into AWS ECR
         id: login-ecr
@@ -68,10 +71,11 @@ jobs:
 
         run: |
           # Build a docker image, push to ECR and deployed to ECS
-          docker build --build-arg SECRET_1=$SECRET_1 --build-arg SECRET_2=$SECRET_2 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          # docker build --build-arg SECRET_1=$SECRET_1 --build-arg SECRET_2=$SECRET_2 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --build-arg SECRET_1=${{ steps.retrieve-secrets.outputs.SECRET_1 }} --build-arg SECRET_2=${{ steps.retrieve-secrets.outputs.SECRET_2 }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "Secret_JSON: $SECRET_1"
+          echo "Secret_JSON: ${{ steps.retrieve-secrets.outputs.SECRET_1 }}"
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -81,15 +85,6 @@ jobs:
           container-name: customer-service-container
           image: ${{ steps.build-image.outputs.image }}
 
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        env:
-          SECRET_1: $SECRET_1
-          SECRET_2: $SECRET_2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: customer-information-service1
-          cluster: CustomerServiceCluster
-          wait-for-service-stability: true
+
 
 

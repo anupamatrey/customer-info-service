@@ -33,5 +33,18 @@ public class CustomerController {
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
+
+        /*
+              - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        env:
+          SECRET_1: $SECRET_1
+          SECRET_2: $SECRET_2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: customer-information-service1
+          cluster: CustomerServiceCluster
+          wait-for-service-stability: true
+         */
     }
 }
