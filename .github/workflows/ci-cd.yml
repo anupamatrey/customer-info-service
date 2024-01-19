@@ -38,34 +38,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Retrieve secrets from AWS Secrets Manager
+        id: retrieve-secrets
+        run: |
+          export SECRET_1=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
+          export SECRET_2=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
+          echo "Secret retrieved successfully"
+
       - name: Login into AWS ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
           mask-password: 'true'
 
-      - name: Retrieve secrets from AWS Secrets Manager
-        env:
-          SECRET_1: ${{ secrets.SECRET_1 }}
-          SECRET_2: ${{ secrets.SECRET_2 }}
-        run: |
-          export SECRET_1=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
-          export SECRET_2=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
-          echo "Secret Key is $SECRET_1"
-          SECRET_ARN=$(aws secretsmanager describe-secret --secret-id anupam/secret/ --query 'ARN' --output text)
-          SECRET_VALUE=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
-          SECRET_KEY=$(echo $SECRET_VALUE | jq -r '.key1')
-          echo "$SECRET_ARN"
-          echo "$SECRET_VALUE"
-          echo "$SECRET_KEY"
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
           ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
           IMAGE_TAG: ${{github.sha}}
           ECR_REPOSITORY: 'customer-service-repository'
-          SECRET_1: $SECRET_1
-          SECRET_2: $SECRET_2
         run: |
           # Build a docker image, push to ECR and deployed to ECS
           docker build --build-arg SECRET_1=$SECRET_1 --build-arg SECRET_2=$SECRET_2 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -88,7 +79,6 @@ jobs:
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
           container-env-vars: |
-            SECRET_1:$SECRET_1
-            SECRET_2:$SECRET_2
-            echo "Secret Key is $SECRET_1"
+            SECRET_1=$SECRET_1
+            SECRET_2=$SECRET_2
 
