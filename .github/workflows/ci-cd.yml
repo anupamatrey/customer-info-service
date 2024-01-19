@@ -88,7 +88,7 @@ jobs:
           service: customer-information-service1
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
-          container-env-vars: |
+          container-environment-variables: |
             SECRET_1=$SECRET_1
             SECRET_2=$SECRET_2
             echo "Secret: $SECRET_1"
