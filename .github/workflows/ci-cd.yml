@@ -51,7 +51,7 @@ jobs:
         run: |
           export SECRET_1=$(aws secretsmanager get-secret-value --secret-id key1 --query 'SecretString' --output text)
           export SECRET_2=$(aws secretsmanager get-secret-value --secret-id key2 --query 'SecretString' --output text)
-
+          echo "Secret Key is $SECRET_1"
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
