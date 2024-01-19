@@ -47,10 +47,6 @@ jobs:
           SECRET_1=$(echo $SECRET_JSON | jq -r '.key1')
           SECRET_2=$(echo $SECRET_JSON | jq -r '.key2')
           echo "Secret_JSON: $SECRET_1"
-          
-          
-          export SECRET_11=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
-          export SECRET_21=$(aws secretsmanager get-secret-value --secret-id anupam/secret/ --query 'SecretString' --output text)
 
       - name: Set outputs
         id: set-outputs
@@ -78,7 +74,7 @@ jobs:
           echo "Secret_JSON: $SECRET_1"
           # Build a docker image, push to ECR and deployed to ECS
           docker build --build-arg SECRET_1=$(echo $SECRET_JSON | jq -r '.key1') --build-arg SECRET_2=$(echo $SECRET_JSON | jq -r '.key2') -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
 
