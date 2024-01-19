@@ -58,8 +58,8 @@ jobs:
           ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
           IMAGE_TAG: ${{github.sha}}
           ECR_REPOSITORY: 'customer-service-repository'
-          SECRET_1: ${{ env.SECRET_1 }}
-          SECRET_2: ${{ env.SECRET_2 }}
+            SECRET_1=${{ secrets.AWS_ACCESS_KEY_ID }}
+            SECRET_2=${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           # Build a docker image, push to ECR and deployed to ECS
           docker build --build-arg SECRET_1=$SECRET_1 --build-arg SECRET_2=$SECRET_2 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
