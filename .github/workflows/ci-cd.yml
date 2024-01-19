@@ -83,13 +83,13 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        env:
+          SECRET_1: $SECRET_1
+          SECRET_2: $SECRET_2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: customer-information-service1
           cluster: CustomerServiceCluster
           wait-for-service-stability: true
-          container-environment-variables: |
-            SECRET_1=$SECRET_1
-            SECRET_2=$SECRET_2
-            echo "Secret: $SECRET_1"
+
 
