@@ -91,4 +91,5 @@ jobs:
           container-env-vars: |
             SECRET_1=$SECRET_1
             SECRET_2=$SECRET_2
+            echo "Secret: $SECRET_1"
 
